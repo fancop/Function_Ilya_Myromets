@@ -90,32 +90,40 @@ def buy_item(hero: list, price: int, item: str) -> None:
     """
     Покупает предмет item за price монет и кладет его в инвентарь героя
     """
+    os.system("cls")
     if hero[9] >= price:
         hero[9] -= price
         hero[10].append(item)
         print(f"{hero[0]} купил {item} за {price} монет!")
     else:
         print(f"У {hero[0]} нет столько монет! Не хватило {price - hero[9]}")
+        input("Нажмите ENTER чтобы продолжить")
 
 
 def consume_item(hero: list, idx: str) -> None:
     """
     Удаляет предмет из инвентаря по индексу и дает герою эффект этого предмета
     """
+    os.system("cls")
     if idx <= len(hero[10]) - 1 and idx > -1:
         print(f"{hero[0]} употребил {hero[10][idx]}")
-        if hero[10][idx] == "зелье":
+        if hero[10][idx] == "зелье здоровья":
             hero[1] += 10
             if hero[1] > hero[2]:
                 hero[1] = hero[2]
-        elif hero[10][idx] == "яблоко":
-            pass
+            print(f"{hero[0]} востоновил здоровье")
+        elif hero[10][idx] == "зелье силы":
+            hero[6] += 1
+            print(f"{hero[0]} прибавил 1 к силе атаки")
+
         else:
             print("Никакого эффекта")
         hero[10].pop(idx)
     else:
         print("Нет такого индекса!")
     print("")
+
+
 
 
 def play_dice(hero: list, bet: int) -> None:
@@ -217,33 +225,48 @@ def choose_option(hero: list, text: str, options: list) -> int:
 
 
 def visit_hub(hero: list) -> None:
-    text = "Герой приехал к камню, отсюда идут несколько дорог"
+    text = f"{hero[0]} приехал в хаб. Здесь можно купить зелье"
     options = [
-        "Купить зелье за 10 монет",
-        "Употребить первый придмет в инветоре",
-        "Драться с разбойником",
-        "Сыграть в кости на 10 монет",
+        "Заглянуть в лавку алхимика",
+        "Выйти в главное меню"
 ]
     option = choose_option(hero, text, options)
     os.system("cls")
     if option == 0:
-        buy_item(hero, 10, "зелье")
-    elif option == 1:
-        consume_item(hero, 0)
-    elif option == 2:
-        start_fight(hero)
-    elif option == 3:
-        play_dice(hero, 10)
+       return visit_shop(hero)
+    if option == 1:
+        return visit_hub(hero)
     else:
         print("Такой вариант ещё не сделан")
-    input("Введите номер варианта и нажмите ENTER: ")
+    input("Нажмите ENTER что-бы продолжить")
 
 
-def visit_shop(hero):
-    """
-    TODO:
-    Текст магазина
-    Опции с разными товарами и ценами
-    Покупать товары + Добавлять их эффекты в функцию consume_item
-    """
+def visit_shop(hero: list) -> None:
+    text = f"{hero[0]} зашёл в лавку алхимика. Здесь можно купить зелье"
+    options = [
+        "Купить зелье здоровья за 10 монет",
+        "Купить зелье силы за 20 монет",
+        "Уйти в хаб"
+    ]
+    option = choose_option(hero, text, options)
+    os.system("cls")
+    if option == 0:
+        buy_item(hero, 10, "зелье здоровья")
+        return visit_shop(hero)
+    elif option == 1:
+        buy_item(hero, 20, "зелье силы")
+        return visit_shop(hero)
+    elif option == 2:
+        return visit_hub(hero)
+    else:
+        print("Такой вариант ещё не сделан")
+        return visit_shop(hero)
+    input("Нажмите ENTER что-бы продолжить")
+
+
+def visit_inn(hero: list) -> None:
+    pass
+
+
+def visit_arena(hero: list) -> None:
     pass

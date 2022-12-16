@@ -36,7 +36,7 @@ def make_hero(
 
     if not hp_now:
         hp_now = randint(1, 100)
-    
+
     if not hp_max:
         hp_max = hp_now
 
@@ -47,7 +47,7 @@ def make_hero(
 
     if not inventory:
         inventory = []
-    
+
     return [
         name,
         hp_now,
@@ -98,7 +98,7 @@ def buy_item(hero: list, price: int, item: str) -> None:
     else:
         print(f"У {hero[0]} нет столько монет! Не хватило {price - hero[9]}")
     input("\nНажмите ENTER чтобы продолжить")
-    
+
 
 def consume_item(hero: list) -> None:
     """
@@ -124,7 +124,7 @@ def consume_item(hero: list) -> None:
             hero[10].pop(idx)
         else:
             print("Нет такого индекса!")
-    
+
 
 
 def play_dice(hero: list, bet: str) -> None:
@@ -322,7 +322,7 @@ def start_fight(hero: list) -> None:
         "Атаковать противника",
         "Использовать предмет из инвентаря"
     ]
-    
+
     show_hero(hero)
     show_hero(enemy)
 

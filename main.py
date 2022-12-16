@@ -238,6 +238,10 @@ def visit_shop(hero: list) -> None:
         "Купить зелье силы за 20 монет",
         "Уйти в Хаб"
     ]
+    os.system("cls")
+    show_hero(hero)
+    print(text)
+    show_options(hero, options)
     option = choose_option(hero, options)
     os.system("cls")
     if option == 0:
@@ -260,6 +264,9 @@ def visit_inn(hero: list) -> None:
         "Сыграть в кости на деньги",
         "Уйти в Хаб"
     ]
+    show_hero(hero)
+    print(text)
+    show_options(hero, options)
     option = choose_option(hero, options)
     os.system("cls")
     if option == 0:
@@ -315,7 +322,7 @@ def start_fight(hero: list) -> None:
         "Атаковать противника",
         "Использовать предмет из инвентаря"
     ]
-
+    
     show_hero(hero)
     show_hero(enemy)
 

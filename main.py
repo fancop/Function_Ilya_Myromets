@@ -19,20 +19,6 @@ def make_hero(
         money=None,
         inventory=None,
 ) -> dict:
-    """
-    Персонаж - это список
-    [0] name - имя
-    [1] hp_now - здоровье текущее
-    [2] hp_max - здоровье максимальное
-    [3] lvl - уровень
-    [4] xp_now - опыт текущий
-    [5] xp_next - опыт до следующего уровня
-    [6] attack - сила атаки, применяется в бою
-    [7] defence - защита, применяется в бою
-    [8] luck - удача
-    [9] money - деньги
-    [10] inventory - список предметов
-    """
     if not name:
         name = choice(first_names) + " " + choice(last_names)
 
@@ -54,10 +40,10 @@ def make_hero(
         weapon = {
             "тип": "оружие",
             "название": "Обычный меч",
+            "свойство": "атака",
             "модификатор": 3,
-            "цена": 50,
+            "цена": 100,
         }
-
 
     return {
         "имя": name,
@@ -65,8 +51,9 @@ def make_hero(
         "здоровье макс": hp_max,
         "уровень": lvl,
         "опыт": xp_now,
-        "опыт до следующего уровня": xp_next,
+        "опыт след": xp_next,
         "оружие": weapon,
+        "щит": shield,
         "атака": attack,
         "защита": defence,
         "удача": luck,
@@ -80,23 +67,52 @@ def show_item(item: dict) -> None:
     Показывает предмет
     """
     if item:
-        print(f"{item['название']} +{item['модификатор']}")
+        if item['модификатор'] >= 0:
+            print(f"{item['название']} +{item['модификатор']} {item['свойство']}")
+        else:
+            print(f"{item['название']} {item['модификатор']} {item['свойство']}")
     else:
-        print("--пусто--")
+        print("-пусто-")
 
 
-def show_hero(hero:list) -> None:
+def equip_item(hero: dict) -> None:
+    """
+    Показывает пронумерованные предметы
+    Выбрать предмет
+
+    """
+    pass
+
+
+def recalculate_stats(hero: dict) -> None:
+    weapon = hero['оружие']
+    shield = hero['щит']
+    if weapon:
+        hero['атака'] += weapon['модификатор']
+    if shield:
+        hero['защита'] += shield['модификатор']
+
+
+def show_inventory(inventory: list) -> None:
+    print("предметы: ")
+    for item in inventory:
+        show_item(item)
+
+
+def show_hero(hero: list) -> None:
     print("имя:", hero['имя'])
     print("здоровье:", hero['здоровье'], "/", hero['здоровье макс'])
     print("уровень:", hero['уровень'])
-    print("опыт:", hero['опыт'], "/", hero['опыт до следующего уровня'])
-    print("оружие", hero["оружие"])
+    print("опыт:", hero['опыт'], "/", hero['опыт след'])
     print("оружие:", end=" ")
     show_item(hero['оружие'])
+    print("щит:", end=" ")
+    show_item(hero['щит'])
+    print("атака:", hero['атака'])
     print("защита:", hero['защита'])
     print("удача:", hero['удача'])
     print("деньги:", hero['деньги'])
-    print("инвентарь:", hero['инвентарь'])  # TODO: показать все предметы: название +модификатор
+    show_inventory(hero['инвентарь'])
     print("")
 
 
@@ -104,9 +120,9 @@ def levelup(hero: list) -> None:
     """
     TODO: что растет с уровнем?
     """
-    while hero['опыт'] >= hero['опыт до следующего уровня']:
+    while hero['опыт'] >= hero['опыт след']:
         hero['уровень'] += 1
-        hero['опыт до следующего уровня'] = hero['уровень'] * 100
+        hero['опыт след'] = hero['уровень'] * 100
         print(f"\n{hero['имя']} получил {hero['уровень']} уровень\n")
 
 
